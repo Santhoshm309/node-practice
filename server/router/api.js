@@ -5,7 +5,7 @@ var app = express();
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var User = require('./app/models/user');
+var User = require('../../app/models/user');
 var jwt = require('jsonwebtoken');
 var apiRouter = express.Router();
 
@@ -20,12 +20,7 @@ app.use(function(req, res, next) {
  });
  app.use(morgan('dev'));
 
-
- apiRouter.get('/', function(req, res) {
- res.send('Welcome to the home page!');
- });
-
- mongoose.connect('mongodb://localhost:27017/users');
+mongoose.createConnection('mongodb://localhost:27017/users');
 
 
 apiRouter.route('/authenticate')
@@ -71,6 +66,8 @@ if(!validPassword) {
 
 apiRouter.use(function(req,res,next) {
 
+console.log('request');
+
   if (token) {
    var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
@@ -96,6 +93,7 @@ apiRouter.use(function(req,res,next) {
    });
 
    }
+});
 
 
 
@@ -144,4 +142,5 @@ apiRouter.get('/me', function(req, res) {
    res.send(req.decoded);
 });
 
+module.exports = apiRouter;
 })();

@@ -1,7 +1,7 @@
 (function(){
 
     module.exports = function(app){
-        app.use('/techofes',require('router/api'));
+        app.use('/techofes',require('../server/router/api'));
     };
 
 })();
